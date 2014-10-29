@@ -16,22 +16,29 @@ DAO is not provided as a static library. To install, just add all these .h/m fil
 USAGE
 -----
 //declare a DAO class
+
 @interface My1DAO : MingDAO
-........
+
 @end
 
 //create cloud object
+
 id<MingCloud> cloud = [[MingCloudWithParse alloc] init];
 
 //create store object
+
 id<MingStore> store = [[MingStoreWithPropertyList alloc] initWithName:@"myfile.plist" andCloud:cloud];
 
 //create DAO object, it's better to make it singleton
+
 My1DAO *dao = [[My1DAO alloc] initWithStore:store];
 
 //save object (blocking call)
+
 NSDictionary *obj = ......
+
 [dao setObject:obj ByKey:@"myKey"];
 
 //retrieve object (blocking call)
+
 id object = [dao getObjectByKey:@"myKey"];
