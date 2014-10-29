@@ -11,7 +11,15 @@ MingCloud - handles data in backend cloud, currently supports Parse. It can be e
 
 INSTALLATION
 -------------
-DAO is not provided as a static library. To install, just add all these .h/m files into your project.
+DAO is not provided as a static library. To install, just add all these .h/m files into your project, and also add the dependent libraries specified below.
+
+DEPENDENT LIBRARIES
+-------------------
+FMDB: https://github.com/ccgus/fmdb
+
+TMCACHE: https://github.com/tumblr/TMCache
+
+PARSE: https://parse.com/
 
 USAGE
 -----
