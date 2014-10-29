@@ -21,23 +21,28 @@ USAGE
 
 @end
 
+
 //create cloud object
 
 id<MingCloud> cloud = [[MingCloudWithParse alloc] init];
+
 
 //create store object
 
 id<MingStore> store = [[MingStoreWithPropertyList alloc] initWithName:@"myfile.plist" andCloud:cloud];
 
+
 //create DAO object, it's better to make it singleton
 
 My1DAO *dao = [[My1DAO alloc] initWithStore:store];
+
 
 //save object (blocking call)
 
 NSDictionary *obj = ......
 
 [dao setObject:obj ByKey:@"myKey"];
+
 
 //retrieve object (blocking call)
 
