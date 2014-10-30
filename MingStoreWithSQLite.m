@@ -1,7 +1,7 @@
 //
 //  MingStoreWithSQLite.m
 //
-//  Created by Guo, Ming on 10/10/14.
+//  Created by mguo80 on 10/12/14.
 //
 
 #import "MingStoreWithSQLite.h"
@@ -38,8 +38,14 @@
     if (!dbQueue)
     {
         NSString *filePath = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        NSString *dbPath = [[filePath stringByAppendingPathComponent:@"db"] stringByAppendingPathComponent:dbName];
-        dbQueue = [FMDatabaseQueue databaseQueueWithPath:dbPath];
+        NSString *dbPath = [filePath stringByAppendingPathComponent:@"db"];
+        if (![[NSFileManager defaultManager] fileExistsAtPath:dbPath])
+        {
+            NSError *error;
+            [[NSFileManager defaultManager] createDirectoryAtPath:dbPath withIntermediateDirectories:YES attributes:nil error:&error];
+        }
+        NSString *dbFile = [dbPath stringByAppendingPathComponent:dbName];
+        dbQueue = [FMDatabaseQueue databaseQueueWithPath:dbFile];
         if (dbQueue)
         {
             [self.dbMap setObject:dbQueue forKey:dbName];
@@ -51,8 +57,8 @@
 @end
 
 
-static NSString* const COLUMN_ID = @"id";
-static NSString* const COLUMN_DATA = @"data";
+static NSString* const COLUMN_ID   = @"id";     //TEXT type
+static NSString* const COLUMN_DATA = @"data";   //TEXT type
 
 @interface MingStoreWithSQLite()
 @property (nonatomic, strong)   FMDatabaseQueue *dbQueue;
@@ -88,7 +94,7 @@ static NSString* const COLUMN_DATA = @"data";
 
 -(void)createTable
 {
-    NSString *query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ TEXT PRIMARY KEY NOT NULL, %@ BLOB)", self.name, COLUMN_ID, COLUMN_DATA];
+    NSString *query = [NSString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@ (%@ TEXT PRIMARY KEY NOT NULL, %@ TEXT)", self.name, COLUMN_ID, COLUMN_DATA];
     [self.dbQueue inDatabase:^(FMDatabase *db) {
         [db executeUpdate:query];
     }];
@@ -113,7 +119,8 @@ static NSString* const COLUMN_DATA = @"data";
         FMResultSet *rs = [db executeQuery:query];
         if ([rs next])
         {
-            NSData* data = [rs objectForColumnName:COLUMN_DATA];
+            NSString *str = [rs objectForColumnName:COLUMN_DATA];
+            NSData *data = [[NSData alloc] initWithBase64EncodedString:str options:0];
             obj = [NSKeyedUnarchiver unarchiveObjectWithData:data];
         }
         dispatch_semaphore_signal(semaphore);
@@ -140,7 +147,8 @@ static NSString* const COLUMN_DATA = @"data";
 -(void)saveObject:(id<NSCoding>)obj ByKey:(NSString*)key
 {
     NSData *data = [NSKeyedArchiver archivedDataWithRootObject:obj];
-    NSString *query = [NSString stringWithFormat:@"INSERT OR REPLACE INTO %@ (%@, %@) VALUES (%@, %@)", self.name, COLUMN_ID, COLUMN_DATA, key, data];
+    NSString *str = [data base64EncodedStringWithOptions:0];
+    NSString *query = [NSString stringWithFormat:@"INSERT OR REPLACE INTO %@ (%@, %@) VALUES ('%@', '%@')", self.name, COLUMN_ID, COLUMN_DATA, key, str];
     [self.dbQueue inDatabase:^(FMDatabase *db) {
         [db executeUpdate:query];
     }];

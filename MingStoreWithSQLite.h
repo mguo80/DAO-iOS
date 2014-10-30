@@ -1,7 +1,7 @@
 //
 //  MingStoreWithSQLite.h
 //
-//  Created by Guo, Ming on 10/10/14.
+//  Created by mguo80 on 10/12/14.
 //
 
 #import <Foundation/Foundation.h>

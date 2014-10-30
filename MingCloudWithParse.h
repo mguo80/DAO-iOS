@@ -1,7 +1,7 @@
 //
 //  MingCloudWithParse.h
 //
-//  Created by Guo, Ming on 10/22/14.
+//  Created by mguo80 on 10/22/14.
 //
 
 #import <Foundation/Foundation.h>

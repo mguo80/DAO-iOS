@@ -7,7 +7,7 @@ MingDAO - handles data in the heap cache and interfaces with application layer. 
 
 MingStore (MingStoreWithxxx) - handles data in the local disk, currently supports saving data in preference, property list, file and SQL lite. You can provide other means for disk storage, but they all need to conform to MingStore protocol.
 
-MingCloud - handles data in backend cloud, currently supports Parse. It can be easily extended to support other backend cloud.
+MingCloud (MingCloudWithxxx) - handles data in backend cloud, currently supports Parse. It can be easily extended to support other backend cloud.
 
 INSTALLATION
 -------------

@@ -1,7 +1,7 @@
 //
 //  MingStoreWithPreference.m
 //
-//  Created by Guo, Ming on 10/9/14.
+//  Created by mguo80 on 10/12/14.
 //
 
 #import "MingStoreWithPreference.h"

@@ -1,7 +1,7 @@
 //
 //  MingStoreWithFile.h
 //
-//  Created by Guo, Ming on 9/12/14.
+//  Created by mguo80 on 10/12/14.
 //
 
 #import <Foundation/Foundation.h>

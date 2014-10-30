@@ -1,7 +1,7 @@
 //
 //  MingStoreWithPropertyList.m
 //
-//  Created by Guo, Ming on 10/9/14.
+//  Created by mguo80 on 10/12/14.
 //
 
 #import "MingStoreWithPropertyList.h"
@@ -24,7 +24,8 @@
         if (![[NSFileManager defaultManager] fileExistsAtPath:filePathWithFolder])
         {
             //create immediate sub-directory to hold all .plist files
-            [[NSFileManager defaultManager] createDirectoryAtPath:filePathWithFolder withIntermediateDirectories:YES attributes:nil error:nil];
+            NSError *error;
+            [[NSFileManager defaultManager] createDirectoryAtPath:filePathWithFolder withIntermediateDirectories:YES attributes:nil error:&error];
         }
         self.path = [filePathWithFolder stringByAppendingPathComponent:name];
         self.cloud = cld;
