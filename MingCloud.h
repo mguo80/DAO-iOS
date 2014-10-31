@@ -19,4 +19,10 @@
  */
 -(BOOL)setObject:(id)obj ByKey:(NSString*)key;
 
+/**
+ * Synchronous
+ * Remove the object based on the key
+ */
+-(BOOL)removeObjectByKey:(NSString*)key;
+
 @end

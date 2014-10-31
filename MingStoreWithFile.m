@@ -56,6 +56,12 @@
     return [self.cloud setObject:obj ByKey:key];
 }
 
+-(BOOL)removeObjectByKey:(NSString *)key
+{
+    [self.cache removeObjectForKey:key];
+    return [self.cloud removeObjectByKey:key];
+}
+
 -(id)getCustomObjectByKey:(NSString *)key
 {
     return [self getObjectByKey:key];

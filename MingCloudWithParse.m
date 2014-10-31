@@ -29,14 +29,37 @@
 
 -(BOOL)setObject:(id)obj ByKey:(NSString *)key
 {
-    PFObject *pfObj = [PFObject objectWithClassName:self.cloudName];
-    [pfObj setObject:key forKey:LOCAL_ID];
-    [pfObj setObject:[NSKeyedArchiver archivedDataWithRootObject:obj] forKey:LOCAL_DATA];
-    if (![pfObj save])
+    if (self.cloudName)
     {
-        [pfObj saveEventually];
+        PFObject *pfObj = [PFObject objectWithClassName:self.cloudName];
+        [pfObj setObject:key forKey:LOCAL_ID];
+        [pfObj setObject:[NSKeyedArchiver archivedDataWithRootObject:obj] forKey:LOCAL_DATA];
+        if (![pfObj save])
+        {
+            [pfObj saveEventually];
+        }
+        return YES;
     }
-    return YES;
+    return NO;
+}
+
+-(BOOL)removeObjectByKey:(NSString *)key
+{
+    if (self.cloudName)
+    {
+        PFQuery *query = [PFQuery queryWithClassName:self.cloudName];
+        [query whereKey:LOCAL_ID equalTo:key];
+        NSArray *array = [query findObjects];
+        [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            PFObject *pfObj = (PFObject*)obj;
+            if (![pfObj delete])
+            {
+                [pfObj deleteEventually];
+            }
+        }];
+        return YES;
+    }
+    return NO;
 }
 
 @end

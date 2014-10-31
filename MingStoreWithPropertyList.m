@@ -42,7 +42,7 @@
         obj = [self.cloud getObjectByKey:key];
         if (obj)
         {
-            [self savePListObject:obj ByKey:key];
+            [self addToPListWithObject:obj ByKey:key];
         }
     }
     return obj;
@@ -50,8 +50,23 @@
 
 -(BOOL)setObject:(id)obj ByKey:(NSString *)key
 {
-    [self savePListObject:obj ByKey:key];
-    return [self.cloud setObject:obj ByKey:key];
+    if ([self addToPListWithObject:obj ByKey:key])
+    {
+        return [self.cloud setObject:obj ByKey:key];
+    }
+    return NO;
+}
+
+-(BOOL)removeObjectByKey:(NSString *)key
+{
+    NSMutableDictionary *plist = [[self getPList] mutableCopy];
+    [plist removeObjectForKey:key];
+    
+    if ([self savePList:plist])
+    {
+        return [self.cloud removeObjectByKey:key];
+    }
+    return NO;
 }
 
 -(id)getCustomObjectByKey:(NSString *)key
@@ -80,7 +95,18 @@
     return plist;
 }
 
--(void)savePListObject:(id)obj ByKey:(NSString*)key
+-(BOOL)savePList:(NSDictionary*)plist
+{
+    NSError *error;
+    NSData *data = [NSPropertyListSerialization dataWithPropertyList:plist format:NSPropertyListXMLFormat_v1_0 options:(0) error:&error];
+    if (data)
+    {
+        return [data writeToFile:self.path options:NSDataWritingAtomic error:&error];
+    }
+    return NO;
+}
+
+-(BOOL)addToPListWithObject:(id)obj ByKey:(NSString*)key
 {
     NSMutableDictionary *plist = [[self getPList] mutableCopy];
     if (!plist)
@@ -89,12 +115,7 @@
     }
     [plist setObject:obj forKey:key];
     
-    NSError *error;
-    NSData *data = [NSPropertyListSerialization dataWithPropertyList:plist format:NSPropertyListXMLFormat_v1_0 options:(0) error:&error];
-    if (data)
-    {
-        [data writeToFile:self.path options:NSDataWritingAtomic error:&error];
-    }
+    return [self savePList:plist];
 }
 
 @end

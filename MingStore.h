@@ -30,6 +30,12 @@
 
 /**
  * Synchronous
+ * Remove the object based on the key
+ */
+-(BOOL)removeObjectByKey:(NSString*)key;
+
+/**
+ * Synchronous
  * Get non-standard (user-defined, conforming to NSCoding) object by key
  */
 -(id)getCustomObjectByKey:(NSString*)key;

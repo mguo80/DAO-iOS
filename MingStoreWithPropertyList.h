@@ -26,6 +26,8 @@
 
 -(BOOL)setObject:(id)obj ByKey:(NSString*)key;
 
+-(BOOL)removeObjectByKey:(NSString *)key;
+
 -(id)getCustomObjectByKey:(NSString*)key;
 
 -(BOOL)setCustomObject:(id<NSCoding>)obj ByKey:(NSString*)key;

@@ -110,6 +110,15 @@ static NSString* const COLUMN_DATA = @"data";   //TEXT type
     return [self setCustomObject:obj ByKey:key];
 }
 
+-(BOOL)removeObjectByKey:(NSString *)key
+{
+    NSString *query = [NSString stringWithFormat:@"DELETE FROM %@ WHERE %@ = '%@'", self.name, COLUMN_ID, key];
+    [self.dbQueue inDatabase:^(FMDatabase *db) {
+        [db executeUpdate:query];
+    }];
+    return [self.cloud removeObjectByKey:key];
+}
+
 -(id)getCustomObjectByKey:(NSString *)key
 {
     id __block obj = nil;

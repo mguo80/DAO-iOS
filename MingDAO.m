@@ -58,6 +58,19 @@
     return NO;
 }
 
+-(BOOL)removeObjectByKey:(NSString *)key
+{
+    if (key)
+    {
+        if ([self.store removeObjectByKey:key])
+        {
+            [self.cache removeObjectForKey:key];
+            return YES;
+        }
+    }
+    return NO;
+}
+
 -(id)getCustomObjectByKey:(NSString *)key
 {
     id obj = nil;
