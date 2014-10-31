@@ -55,3 +55,7 @@ NSDictionary *obj = ......
 //retrieve object (blocking call)
 
 id object = [dao getObjectByKey:@"myKey"];
+
+
+//remove object (blocking call)
+[dao removeObjectByKey:@"myKey"];
