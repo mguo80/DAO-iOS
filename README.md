@@ -58,4 +58,5 @@ id object = [dao getObjectByKey:@"myKey"];
 
 
 //remove object (blocking call)
+
 [dao removeObjectByKey:@"myKey"];
